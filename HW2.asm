@@ -31,7 +31,8 @@ org 100h
         mov dx, 0
         mov dl, 1  
         mov bx , 0
-        
+                 
+        ; This is a loop for getting an numbers from input
         input_loop:
             mov ah, 1
             int 21h
@@ -43,6 +44,8 @@ org 100h
             push ax
             jmp input_loop
             
+            ; Processsing the numbers so we can add them to the array
+            ; The final number will be in DH
             proc_num:  
                 cmp bl, 0
                 je next_num
@@ -56,8 +59,14 @@ org 100h
                 mov dl, al 
                 dec bl
                 jmp proc_num 
-                   
-            next_num:
+            
+            ; Getting ready for the next number of the array
+            ; Storing the DH into memory that BX points at       
+            next_num:  
+                pop bx
+                mov [bx], dh
+                add bx, 2
+                push bx
                 mov dx, 0
                 mov dl, 1 
                 mov bx, 0
